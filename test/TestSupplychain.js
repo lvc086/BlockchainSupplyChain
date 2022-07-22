@@ -156,6 +156,9 @@ contract('SupplyChain', function(accounts) {
 
         // Mark an item as ForSale by calling function sellItem()
         await supplyChain.sellItem(upc, productPrice, {from: originFarmerID})
+        await supplyChain.addDistributor(distributorID);
+        await supplyChain.addRetailer(retailerID);
+        await supplyChain.addConsumer(consumerID);
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc)
@@ -179,7 +182,7 @@ contract('SupplyChain', function(accounts) {
     // 5th Test
     it("5 - Testing smart contract function buyItem() that allows a distributor to buy coffee", async() => {
         const supplyChain = await SupplyChain.deployed()
-        
+                
         // Declare and Initialize a variable for event
         var eventEmitted = false
         
@@ -190,6 +193,7 @@ contract('SupplyChain', function(accounts) {
         })
 
         // Mark an item as Sold by calling function buyItem()
+        //await supplyChain.addDistributor(distributorID);
         await supplyChain.buyItem(upc, {from: distributorID, value: productPrice}); 
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
@@ -248,7 +252,7 @@ contract('SupplyChain', function(accounts) {
         })
 
         // Mark an item as Sold by calling function buyItem()
-        await supplyChain.receiveItem(upc, {from: retailerID})
+        await supplyChain.receiveItem(upc, {from: retailerID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferOne = await supplyChain.fetchItemBufferOne.call(upc)
